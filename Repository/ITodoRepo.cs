@@ -19,9 +19,5 @@ namespace Todo.Repository
 
         void DeleteTodo(Guid id);
 
-
-
-
-
     }
 }
