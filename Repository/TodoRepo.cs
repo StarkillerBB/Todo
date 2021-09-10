@@ -12,31 +12,52 @@ namespace Todo.Repository
 
         private List<Todos> todos = new List<Todos>();
 
+        /// <summary>
+        /// Adds a todo to the list.
+        /// </summary>
+        /// <param name="todo"></param>
         public void CreateTodo(Todos todo)
         {
 
             todos.Add(todo);
         }
-
+        
+        /// <summary>
+        /// Find a specific todo object.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Todos GetItemById(Guid id)
         {
             return todos.Find(x => x.Id == id);
         }
 
+        /// <summary>
+        /// Delete a specific todo.
+        /// </summary>
+        /// <param name="id"></param>
         public void DeleteTodo(Guid id)
         {
             todos.Remove(GetItemById(id));
         }
 
+        /// <summary>
+        /// Gets the list of todos.
+        /// </summary>
+        /// <returns></returns>
         public List<Todos> GetTodo()
         {
             
             return todos;
         }
 
+        /// <summary>
+        /// Updates the selected todo.
+        /// </summary>
+        /// <param name="todo"></param>
         public void UpdateTodo(Todos todo)
         {
-            
+            todos[todos.FindIndex(x => x.Id == todo.Id)] = todo;
         }
     }
 }
