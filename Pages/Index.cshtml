@@ -5,12 +5,32 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome </h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <table class="table table-dark table-bordered">
+        <tr>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Created At</th>
+            <th>Completed</th>
+        </tr>
+
+
+        @foreach (Model.Todos item in Model.todos)
+        {
+            @if (item.IsCompleted == false)
+            {
+
+                <tr>
+                    <td>@item.TaskDescription</td>
+                    <td>@item.Prio</td>
+                    <td>@item.CreatedTime.ToString("MM-dd-yyyy")</td>
+                    <td> <input type="checkbox" name="Completed" value="" /> </td>
+                    <td><button class="btn btn-warning">Edit</button></td>
+                    <td><button OnClick="@Model." class="btn btn-danger">Delete</button></td>
+                </tr>
+            }
+        }
+    </table>
+
 </div>
 
-@{ 
     
-
-
-}

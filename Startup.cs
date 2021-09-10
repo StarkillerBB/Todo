@@ -25,7 +25,7 @@ namespace Todo
         public void ConfigureServices(IServiceCollection services)
         {
             //TODO : Add singleton to project.
-            //services.AddSingleton<ITodoRepo>();
+            services.AddSingleton<ITodoRepo>(new TodoRepo());
             services.AddRazorPages();
         }
 

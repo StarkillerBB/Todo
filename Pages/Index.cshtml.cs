@@ -13,16 +13,33 @@ namespace Todo.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-        
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly ITodoRepo _todoRepo;
+
+        public List<Todos> todos { get; set; }
+
+        public IndexModel(ITodoRepo repo)
         {
-            _logger = logger;
+            
+            _todoRepo = repo;
         }
 
         public void OnGet()
         {
-           
+            todos = _todoRepo.GetTodo();
+            CreateStartUpObjects();
+        }
+
+        public void OnPostDelete()
+        {
+
+        }
+        
+        public void CreateStartUpObjects()
+        {
+            _todoRepo.CreateTodo(new Todos() { TaskDescription = "Todo 1" });
+            _todoRepo.CreateTodo(new Todos() { TaskDescription = "Todo 2" });
+            _todoRepo.CreateTodo(new Todos() { TaskDescription = "Todo 3" });
+            _todoRepo.CreateTodo(new Todos() { TaskDescription = "Todo 4" });
         }
     }
 }

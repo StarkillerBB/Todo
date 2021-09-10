@@ -7,7 +7,7 @@ using Todo.Pages;
 
 namespace Todo.Repository
 {
-    interface ITodoRepo
+    public interface ITodoRepo
     {
         void CreateTodo(Todos todos);
 
