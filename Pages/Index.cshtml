@@ -4,33 +4,70 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <table class="table table-dark table-bordered">
-        <tr>
-            <th>Description</th>
-            <th>Priority</th>
-            <th>Created At</th>
-            <th>Completed</th>
-        </tr>
+<body class="text-center">
+    <form action="/" method="post">
+        <table class="table table-dark table-bordered">
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Created At</th>
+                <th>Completed</th>
+                <th><button type="button" class="btn btn-success" data-toggle="modal" data-target="#CreateTodo">Create todo</button></th>
+                <th><button class="btn btn-light">Save table</button></th>
+            </tr>
 
 
-        @foreach (Model.Todos item in Model.todos)
-        {
-            @if (item.IsCompleted == false)
+            @foreach (Model.Todos item in Model.todos)
             {
-
-                <tr>
-                    <td>@item.TaskDescription</td>
-                    <td>@item.Prio</td>
-                    <td>@item.CreatedTime.ToString("MM-dd-yyyy")</td>
-                    <td> <input type="checkbox" name="Completed" value="" /> </td>
-                    <td><button class="btn btn-warning">Edit</button></td>
-                    <td><button OnClick="@Model." class="btn btn-danger">Delete</button></td>
-                </tr>
+                @if (item.IsCompleted == false)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.TaskDescription</td>
+                        <td>@item.Prio</td>
+                        <td>@item.CreatedTime.ToString("MM-dd-yyyy")</td>
+                        <td> <input type="checkbox" name="Completed" value="" /> </td>
+                        <td><button class="btn btn-warning">Edit</button></td>
+                        <td><button OnClick="" class="btn btn-danger">Delete</button></td>
+                    </tr>
+                }
             }
-        }
-    </table>
+        </table>
+    </form>
 
-</div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="CreateTodo" tabindex="-1" role="dialog" aria-labelledby="ModalCreateTodo" aria-hidden="true">
+        <form method="post">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create Todo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body flex">
+                        @*<div class="w-25 text-left">
+                            <input type="radio" name="prio" value="Low" />Low <br />
+                            <input type="radio" name="prio" value="Normal" checked/>Normal <br />
+                            <input type="radio" name="prio" value="High" />High <br />
+                        </div>*@
+                        <div class="w-75">
+                            <p>Write description of the todo:</p>
+                            <input type="text" asp-for="Description" name="desc" value="" style="width:75%;"/>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input class="btn btn-primary" type="submit" name="name" value="Create Todo" asp-page-handler="Create"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</body>
 
     
