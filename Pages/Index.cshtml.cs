@@ -21,6 +21,8 @@ namespace Todo.Pages
         [BindProperty]
         [MaxLength(25), Required]
         public string Description { get; set; }
+        [BindProperty]
+        public bool IsCompleted { get; set; }
 
         [BindProperty]
         public Todos todo { get; set; }
@@ -44,11 +46,12 @@ namespace Todo.Pages
 
         }
         
-        public IActionResult OnPostEdit(Guid id, string UpdateDescription)
+        public IActionResult OnPostEdit(Guid id, string UpdateDescription, bool UpdateCompleted)
         {
             _logger.LogWarning(id.ToString());
             Todos updateTodo = _todoRepo.GetItemById(id);
             updateTodo.TaskDescription = UpdateDescription;
+            updateTodo.IsCompleted = UpdateCompleted;
             _todoRepo.UpdateTodo(updateTodo);
             return Page();
         }

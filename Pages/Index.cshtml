@@ -27,7 +27,7 @@
                         <td>@item.TaskDescription</td>
                         <td>@item.Prio</td>
                         <td>@item.CreatedTime.ToString("MM-dd-yyyy")</td>
-                        <td> <input type="checkbox" name="Completed" value="" /> </td>
+                        <td> <input type="checkbox" name="IsChecked" id="Completed" value="" /> </td>
                         <td><button type="button" id="@item.Id" data-toggle="modal" data-target="#UpdateModal" class="btn btn-warning btnUpdate">Edit</button></td>
                         <td><button type="submit" asp-page-handler="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</button></td>
                     </tr>
@@ -95,6 +95,7 @@
                             <input type="text" id="Description" asp-for="Description" name="UpdateDescription" value="" style="width:75%;" /><br />
                             <span asp-validation-for="Description" class="text-danger"></span>
                             <input type="hidden" name="id" id="id" value="" />
+                            <input type="checkbox" name="UpdateCompleted" id="IsCompleted" value="true" asp-for="IsCompleted"/>
                         </div>
 
                     </div>
@@ -123,6 +124,7 @@ $(function () {
                         console.log(result);
                     $('#UpdateModal #id').val(result.id)
                     $('#UpdateModal #Description').val(result.taskDescription)
+                    $('#UpdateModal #IsCompleted').val(result.isCompleted)
                 }
             });
         });
