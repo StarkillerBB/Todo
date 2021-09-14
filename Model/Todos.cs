@@ -20,7 +20,7 @@ namespace Todo.Model
 
         public Todos()
         {
-            Id = Guid.NewGuid();
+            //Id = Guid.NewGuid();
             CreatedTime = DateTime.Today;
             Prio = Priority.Normal;
             IsCompleted = false;

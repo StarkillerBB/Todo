@@ -3,9 +3,9 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
 <body class="text-center">
-    <form action="/" method="post">
+
+    <form method="post">
         <table class="table table-dark table-bordered">
             <tr>
                 <th>ID</th>
@@ -28,18 +28,21 @@
                         <td>@item.Prio</td>
                         <td>@item.CreatedTime.ToString("MM-dd-yyyy")</td>
                         <td> <input type="checkbox" name="Completed" value="" /> </td>
-                        <td><button class="btn btn-warning">Edit</button></td>
-                        <td><button OnClick="" class="btn btn-danger">Delete</button></td>
+                        <td><button type="button" id="@item.Id" data-toggle="modal" data-target="#UpdateModal" class="btn btn-warning btnUpdate">Edit</button></td>
+                        <td><button type="submit" asp-page-handler="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</button></td>
                     </tr>
+
+
                 }
             }
         </table>
     </form>
 
 
-    <!-- Modal -->
+    <!-- Modal for Create-->
     <div class="modal fade" id="CreateTodo" tabindex="-1" role="dialog" aria-labelledby="ModalCreateTodo" aria-hidden="true">
-        <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <form method="post" enctype="multipart/form-data">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -50,24 +53,80 @@
                     </div>
                     <div class="modal-body flex">
                         @*<div class="w-25 text-left">
-                            <input type="radio" name="prio" value="Low" />Low <br />
-                            <input type="radio" name="prio" value="Normal" checked/>Normal <br />
-                            <input type="radio" name="prio" value="High" />High <br />
-                        </div>*@
+                                <input type="radio" name="prio" value="Low" />Low <br />
+                                <input type="radio" name="prio" value="Normal" checked/>Normal <br />
+                                <input type="radio" name="prio" value="High" />High <br />
+                            </div>*@
                         <div class="w-75">
                             <p>Write description of the todo:</p>
-                            <input type="text" asp-for="Description" name="desc" value="" style="width:75%;"/>
+                            <input type="text" asp-for="Description" name="Description" value="" style="width:75%;" /><br />
+                            <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <input class="btn btn-primary" type="submit" name="name" value="Create Todo" asp-page-handler="Create"/>
+                        <input class="btn btn-primary" type="submit" name="name" value="Create Todo" asp-page-handler="Create" />
                     </div>
                 </div>
             </div>
         </form>
     </div>
 
-</body>
+    <!-- Modal for update-->
+    <div class="modal fade" id="UpdateModal" tabindex="-1" role="dialog" aria-labelledby="ModalUpdateTodo" aria-hidden="true">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Todo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body flex">
+                        @*<div class="w-25 text-left">
+                                <input type="radio" name="prio" value="Low" />Low <br />
+                                <input type="radio" name="prio" value="Normal" checked/>Normal <br />
+                                <input type="radio" name="prio" value="High" />High <br />
+                            </div>*@
+                        <div class="w-75">
+                            <p>Write new description of the todo:</p>
+                            <input type="text" id="Description" asp-for="Description" name="UpdateDescription" value="" style="width:75%;" /><br />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                            <input type="hidden" name="id" id="id" value="" />
+                        </div>
 
-    
+                    </div>
+                    <div class="modal-footer">
+                        <input class="btn btn-primary" type="submit" name="name" value="Update Todo" asp-page-handler="Edit" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+</body>
+@section scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+$(function () {
+    $('button.btnUpdate').on('click', function () {
+        var id = $(this).attr('id');
+            $.ajax({
+                type: "GET",
+                data: {id:id},
+                url: '@Url.Page("Index", "JsonObj")',
+                success: function (result) {
+                        console.log(result);
+                    $('#UpdateModal #id').val(result.id)
+                    $('#UpdateModal #Description').val(result.taskDescription)
+                }
+            });
+        });
+    });
+    </script>
+}
+

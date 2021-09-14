@@ -47,7 +47,6 @@ namespace Todo.Repository
         /// <returns></returns>
         public List<Todos> GetTodo()
         {
-            
             return todos;
         }
 
@@ -57,7 +56,13 @@ namespace Todo.Repository
         /// <param name="todo"></param>
         public void UpdateTodo(Todos todo)
         {
-            todos[todos.FindIndex(x => x.Id == todo.Id)] = todo;
+
+            int todoIndex = todos.FindIndex(x => x.Id == todo.Id);
+            if (todoIndex != -1)
+            {
+                todos[todoIndex] = todo;
+            }
+
         }
     }
 }

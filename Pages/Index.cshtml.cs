@@ -15,46 +15,62 @@ namespace Todo.Pages
     public class IndexModel : PageModel
     {
         private readonly ITodoRepo _todoRepo;
+        private readonly ILogger<IndexModel> _logger;
         public List<Todos> todos { get; set; }
 
         [BindProperty]
         [MaxLength(25), Required]
         public string Description { get; set; }
 
-        public IndexModel(ITodoRepo repo)
+        [BindProperty]
+        public Todos todo { get; set; }
+
+        public IndexModel(ITodoRepo repo, ILogger<IndexModel> logger)
         {
-            
             _todoRepo = repo;
+            todos = _todoRepo.GetTodo();
+
+            _logger = logger;
         }
 
         public void OnGet()
         {
-            todos = _todoRepo.GetTodo();
-            //CreateStartUpObjects();
+            
+            
         }
 
         public void OnPost()
         {
 
         }
-
-        public void OnPostDelete()
-        {
-
-        }
         
-        public IActionResult OnPostCreate()
+        public IActionResult OnPostEdit(Guid id, string UpdateDescription)
         {
-            _todoRepo.CreateTodo(new Todos() { TaskDescription = Description});
+            _logger.LogWarning(id.ToString());
+            Todos updateTodo = _todoRepo.GetItemById(id);
+            updateTodo.TaskDescription = UpdateDescription;
+            _todoRepo.UpdateTodo(updateTodo);
             return Page();
         }
 
-        //public void CreateStartUpObjects()
-        //{
-        //    _todoRepo.CreateTodo(new Todos() { TaskDescription = "Todo 1" });
-        //    _todoRepo.CreateTodo(new Todos() { TaskDescription = "Todo 2" });
-        //    _todoRepo.CreateTodo(new Todos() { TaskDescription = "Todo 3" });
-        //    _todoRepo.CreateTodo(new Todos() { TaskDescription = "Todo 4" });
-        //}
+        public void OnPostDelete(Guid id)
+        {
+
+            _todoRepo.DeleteTodo(id);
+            
+        }
+        
+        public void OnPostCreate()
+        {
+            _todoRepo.CreateTodo(new Todos() { Id = Guid.NewGuid(), TaskDescription = Description });
+            
+        }
+
+        public IActionResult OnGetJsonObj(Guid id)
+        {
+            Todos todo = _todoRepo.GetItemById(id);
+            return new JsonResult(todo);
+        }
+
     }
 }
